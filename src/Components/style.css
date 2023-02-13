@@ -1,0 +1,37 @@
+.error-popup {
+    background-color: rgb(255, 231, 231);
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(124, 73, 73);
+}
+.error-popup>p,.success-popup>p {
+    padding: 0;
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+.success-popup {
+    background-color: rgb(231, 255, 235);
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(99, 164, 99);
+}
+.page-not-found-container {
+    height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.page-not-found-container>h1 {
+    color: rgb(207, 207, 207);
+}
+.user-grid {
+    height: 75vh;
+    overflow: scroll;
+}
