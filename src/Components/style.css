@@ -29,9 +29,34 @@
     align-items: center;
 }
 .page-not-found-container>h1 {
-    color: rgb(207, 207, 207);
+    color: rgb(167, 167, 167);
 }
 .user-grid {
     height: 75vh;
     overflow: scroll;
+}
+.op-1 {
+    z-index: 1;
+}
+.model-container {
+    background-color: rgba(95, 95, 95, 0.411);
+    height: 130vh;
+    width: 100vw;
+    position: absolute;
+    top: -200px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow:scroll;
+}
+.model-container::-webkit-scrollbar {
+    display: none;
+}
+.model-container>div {
+    width: 70%;
+    position: relative;
+    top: 200px;
+    background-color: white;
+    border-radius: 20px;
 }

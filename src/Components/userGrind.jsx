@@ -1,16 +1,21 @@
+import EditUserInfo from "./EditUserInfo";
+
 const { useEffect,useState } = require("react")
 
 
 
 const UserGrid = () => {
     const [allUsers,setAllUsers] = useState([]);
+    const [isDisplayEditModel,setIsDisplayEditModel] = useState(false);
     useEffect(() => {
         fetch('http://127.0.0.7:4500/users')
         .then( res => res.json())
         .then( data => setAllUsers(data.users))
         .catch(console.log)
     },[])
-    return <div className="user-grid">
+    return <>
+    {isDisplayEditModel && <EditUserInfo setIsDisplayEditModel={setIsDisplayEditModel}/>}
+    <div className="user-grid">
         <table className="table table-secondary">
             <thead>
                 <tr>
@@ -25,6 +30,7 @@ const UserGrid = () => {
                     <th>Subject</th>
                     <th>Gender</th>
                     <th>Parement adsress</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -42,12 +48,16 @@ const UserGrid = () => {
                             <td>{user.subject || '--'}</td>
                             <td>{user.gender || '--'}</td>
                             <td>{user.permaddress || '--'}</td>
+                            <td> <i class="fa fa-plus" onClick={() => {
+                                setIsDisplayEditModel(true)
+                            }}></i><i className="fa fa-trash"></i></td>
                         </tr>
                     })
                 }
             </tbody>
         </table>
     </div>
+    </>
 }
 
 export default UserGrid;

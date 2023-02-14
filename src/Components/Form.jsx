@@ -21,9 +21,17 @@ const INITIAL_USER_Info = {
 };
 
 let PORT_USER_URL = "http://127.0.0.7:4500/users"
-const Form = () => {
+const Form = ({
+  isSumbitBtn = true,
+  isPhoneDisable = false,
+  isAadharDisable = false,
+  isNameDisable = false,
+  isFromEditModel,
+  userData,
+  border = true
+}) => {
   const validate = useValidate(Object.keys(INITIAL_USER_Info)); //['fname','lname',]
-  const [userInfo, setUserInfo] = useState(INITIAL_USER_Info);
+  const [userInfo, setUserInfo] = useState(isFromEditModel ? userData : INITIAL_USER_Info);
   const [errors,setErrors] = useState({});
   const [isSuccess,setIsSuccess] = useState(null);
 
@@ -67,7 +75,7 @@ const Form = () => {
     })
   }
   return (
-    <form className="container mt-4 border border-2 rounded rounder-3" onSubmit={onSubmitForm}>
+    <form className={border ? "container mt-4 border border-2 rounded rounder-3" : "container mt-4"} onSubmit={onSubmitForm}>
       <div className="row p-2">
         { isSuccess !== null && isSuccess === false && <Popup text="Already account existed with given gmail or number" classList="error-popup"/>}
         { isSuccess && <Popup text="successfully inaserted data" classList="success-popup" />}
@@ -80,6 +88,7 @@ const Form = () => {
             handler={onUserEnterInput}
             className="form-control"
             placeholder="ex:brenden"
+            isDisable={isNameDisable}
           />
         </div>
         <div className="form-group col-md-6 p-1">
@@ -103,6 +112,7 @@ const Form = () => {
             handler={onUserEnterInput}
             className="form-control"
             placeholder="ex:90XXXXXXX24"
+            isDisable={isPhoneDisable}
           />
         </div>
         <div className="form-group col-md-6 p-1">
@@ -163,6 +173,7 @@ const Form = () => {
             handler
             className="form-control"
             placeholder="ex:4573 XXXX XXXX XXX8"
+            isDisable={isAadharDisable}
           />
         </div>
         <div className="form-group col-md-6 p-1">
@@ -229,12 +240,12 @@ const Form = () => {
       </div>
       <div className="row p-3">
         <div className="text-center">
-          <button
+          { isSumbitBtn && <button
             type="submit"
             className="btn btn-outline-dark p-3 text-primary border-primary"
           >
             SUBMIT
-          </button>
+          </button>}
         </div>
       </div>
     </form>
