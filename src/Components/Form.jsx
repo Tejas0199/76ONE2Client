@@ -28,12 +28,15 @@ const Form = ({
   isNameDisable = false,
   isFromEditModel,
   userData,
-  border = true
+  method = 'POST',
+  border = true,
+  ...restProps
 }) => {
   const validate = useValidate(Object.keys(INITIAL_USER_Info)); //['fname','lname',]
   const [userInfo, setUserInfo] = useState(isFromEditModel ? userData : INITIAL_USER_Info);
   const [errors,setErrors] = useState({});
   const [isSuccess,setIsSuccess] = useState(null);
+  const [resMsg,setResMsg] = useState("");
 
   const [isSameAsParament, setIsSameAsParament] = useState(false);
   const onUserEnterInput = ({ target: { name, value } }) => {
@@ -48,7 +51,7 @@ const Form = ({
     // setErrors(validate(userInfo));
     console.log(userInfo);
     fetch(PORT_USER_URL, {
-      method : "POST",
+      method : method,
       body : JSON.stringify(userInfo),
       headers :  {
         "Content-Type" : "application/json"
@@ -59,6 +62,8 @@ const Form = ({
         setUserInfo(INITIAL_USER_Info)
         setTimeout(() => {
           setIsSuccess(null);
+          restProps.setIsDisplayEditModel && restProps.setIsDisplayEditModel(false)
+          restProps.setGetLatestData && restProps.setGetLatestData(prev => !prev)
         },3000)
         return res.json()
       }
@@ -69,7 +74,7 @@ const Form = ({
         },3000)
       }
     }).then((data) => {
-      console.log(data);
+      setResMsg(data.msg)
     }).catch(err => {
       console.log(err)
     })
@@ -77,8 +82,8 @@ const Form = ({
   return (
     <form className={border ? "container mt-4 border border-2 rounded rounder-3" : "container mt-4"} onSubmit={onSubmitForm}>
       <div className="row p-2">
-        { isSuccess !== null && isSuccess === false && <Popup text="Already account existed with given gmail or number" classList="error-popup"/>}
-        { isSuccess && <Popup text="successfully inaserted data" classList="success-popup" />}
+        { isSuccess !== null && isSuccess === false && <Popup text={resMsg} classList="error-popup"/>}
+        { isSuccess && <Popup text={resMsg} classList="success-popup" />}
         <div className="form-group col-md-6 p-1">
           <Input
             label="ENTER FIRST NAME"
@@ -246,6 +251,7 @@ const Form = ({
           >
             SUBMIT
           </button>}
+          {restProps.children}
         </div>
       </div>
     </form>

@@ -1,20 +1,30 @@
 import EditUserInfo from "./EditUserInfo";
-
+import Loading from "./Loading";
 const { useEffect,useState } = require("react")
 
 
 
 const UserGrid = () => {
     const [allUsers,setAllUsers] = useState([]);
+    const [editUserIndex,setEditUserIndex] = useState(null); 
     const [isDisplayEditModel,setIsDisplayEditModel] = useState(false);
+    const [getLatestData,setGetLatestData] = useState(false);
+    const [isProcessing,setisProcessing] = useState(false);
     useEffect(() => {
+        setisProcessing(true);
         fetch('http://127.0.0.7:4500/users')
         .then( res => res.json())
-        .then( data => setAllUsers(data.users))
+        .then( data => {
+            setisProcessing(false);
+            setAllUsers(data.users)
+        })
         .catch(console.log)
-    },[])
+    },[getLatestData])
     return <>
-    {isDisplayEditModel && <EditUserInfo setIsDisplayEditModel={setIsDisplayEditModel}/>}
+    {isDisplayEditModel && <EditUserInfo 
+    userData={allUsers[editUserIndex]} 
+    setGetLatestData={setGetLatestData}
+    setIsDisplayEditModel={setIsDisplayEditModel}/>}
     <div className="user-grid">
         <table className="table table-secondary">
             <thead>
@@ -35,7 +45,7 @@ const UserGrid = () => {
             </thead>
             <tbody>
                 {
-                    allUsers.map( (user,index) => {
+                   allUsers.length > 0 && allUsers.map( (user,index) => {
                         return <tr key={index}>
                             <td>{index + 1 || '--'}</td>
                             <td>{user.fname || '--'}</td>
@@ -50,12 +60,16 @@ const UserGrid = () => {
                             <td>{user.permaddress || '--'}</td>
                             <td> <i class="fa fa-plus" onClick={() => {
                                 setIsDisplayEditModel(true)
+                                setEditUserIndex(index);
                             }}></i><i className="fa fa-trash"></i></td>
                         </tr>
                     })
                 }
             </tbody>
         </table>
+        {
+           isProcessing && <Loading/>
+        }
     </div>
     </>
 }

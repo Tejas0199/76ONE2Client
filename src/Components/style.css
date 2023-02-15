@@ -60,3 +60,33 @@
     background-color: white;
     border-radius: 20px;
 }
+
+.loader-conatiner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+
+.loader-icon {
+    width: 100px;
+    height: 100px;
+    background-color: rgba(0, 0, 0, 0.358);
+    border-radius: 50%;
+    animation: loading 1s linear infinite alternate-reverse;
+}
+
+@keyframes loading {
+    0% {
+        width: 70px;
+        height: 70px;
+    }
+    50% {
+        width: 100px;
+        height: 100px;
+    }
+    100% {
+        width: 70px;
+        height: 70px;
+    }
+}
